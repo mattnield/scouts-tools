@@ -1,3 +1,7 @@
+# Scouts Tools
+
+This project is designed to replace a .NET web application that provided infomrmation about chief scout award progress for any given unit. It was built to make better use of OAuth and individual user premissions so tha anyone can use the application for any section.
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
