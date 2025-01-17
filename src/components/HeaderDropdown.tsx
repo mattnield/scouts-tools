@@ -1,7 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import React, { useEffect, useState } from 'react';
 import { useApplicationContext } from '../context/ApplicationContext';
+import { Section } from '../models/Section'; // Import the model
 
 const HeaderDropdown: React.FC = () => {
   const { sections, setSections, selectedSection, setSelectedSection } = useApplicationContext();
@@ -18,9 +20,8 @@ const HeaderDropdown: React.FC = () => {
         if (!response.ok) {
           throw new Error(`Failed to fetch sections: ${response.statusText}`);
         }
-        const data = await response.json();
-        setSections(data); // Update sections in the global context
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const data: Section[] = await response.json(); // Ensure API returns Section[]
+        setSections(data);
       } catch (err: any) {
         setError(err.message);
       } finally {
@@ -28,35 +29,40 @@ const HeaderDropdown: React.FC = () => {
       }
     }
 
+    // Fetch sections only if not already loaded
     if (sections.length === 0) {
       fetchSections();
     }
   }, [sections, setSections]);
 
   const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedSection(event.target.value); // Persist selection in context and cookies
+    const selectedId = event.target.value;
+    const selected = sections.find((section) => section.sectionid === selectedId);
+    setSelectedSection(selected || null); // Update the context with the selected Section object
   };
 
   if (loading) {
-    return <p>Loading sections...</p>;
+    return <p className="text-gray-500">Loading sections...</p>;
   }
 
   if (error) {
-    return <p style={{ color: 'red' }}>Error: {error}</p>;
+    return <p className="text-red-500">Error: {error}</p>;
   }
 
   return (
-    <div>
-      <label htmlFor="sectionDropdown">Choose a section:</label>
+    <div className="flex items-center space-x-2">
+      <label htmlFor="sectionDropdown" className="text-gray-700 font-medium">
+        Choose a section:
+      </label>
       <select
         id="sectionDropdown"
-        value={selectedSection || ''}
+        value={selectedSection?.sectionid || ''}
         onChange={handleChange}
-        style={{ marginLeft: '8px', padding: '4px' }}
+        className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
       >
         {sections.map((section, index) => (
-          <option key={index} value={section}>
-            {section}
+          <option key={section.sectionid || index} value={section.sectionid}>
+            {section.sectionname}
           </option>
         ))}
       </select>
