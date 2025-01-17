@@ -49,7 +49,7 @@ export async function validateAndRefreshToken(request: NextRequest): Promise<{ a
     } catch (error: unknown) {
       console.error('Error refreshing token:', error);
       // TODO : Handle this error properly
-      const response = NextResponse.redirect('/login');
+      const response = NextResponse.redirect(`${protocol}://${host}/api/auth/authorize`);
       return { response };
     }
   }

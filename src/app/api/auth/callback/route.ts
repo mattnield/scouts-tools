@@ -27,12 +27,13 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
       client_id: process.env.CLIENT_ID,
       code_verifier: codeVerifier, // Include the PKCE code_verifier
     });
-
-    console.log(response.data);
     const { access_token, refresh_token, expires_in } = response.data;
 
     // Optionally save tokens securely (e.g., database or session)
-    const responseCookie = NextResponse.json({ success: true });
+    // Get the host and protocol for the redirect
+    const protocol = request.headers.get('x-forwarded-proto') === 'https' ? 'https' : 'http';
+    const host = request.headers.get('host');
+    const responseCookie = NextResponse.redirect(`${protocol}://${host}/`);
     responseCookie.cookies.set('access_token', access_token, {
       httpOnly: true,
       secure: true,

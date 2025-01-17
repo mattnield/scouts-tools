@@ -1,26 +1,48 @@
-import React, { createContext, useContext, useState } from 'react';
+'use client';
 
-interface AuthContextType {
-    accessToken: string;
-    setAccessToken: (token: string) => void;
+import React, { createContext, useContext, useEffect, useState } from 'react';
+import Cookies from 'js-cookie';
+
+interface ApplicationContextType {
+  sections: string[];
+  setSections: (sections: string[]) => void;
+  selectedSection: string | null;
+  setSelectedSection: (section: string | null) => void;
 }
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+const ApplicationContext = createContext<ApplicationContextType | undefined>(undefined);
 
-export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    const [accessToken, setAccessToken] = useState<string>('');
+export const ApplicationContextProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [sections, setSections] = useState<string[]>([]);
+  const [selectedSection, setSelectedSectionState] = useState<string | null>(null);
 
-    return (
-        <AuthContext.Provider value={{ accessToken, setAccessToken }}>
-            {children}
-        </AuthContext.Provider>
-    );
+  // Load selected section only on the client
+  useEffect(() => {
+    const savedSection = Cookies.get('selectedSection');
+    setSelectedSectionState(savedSection || null);
+  }, []);
+
+  // Save selected section to cookies
+  const setSelectedSection = (section: string | null) => {
+    setSelectedSectionState(section);
+    if (section) {
+      Cookies.set('selectedSection', section, { expires: 7 });
+    } else {
+      Cookies.remove('selectedSection');
+    }
+  };
+
+  return (
+    <ApplicationContext.Provider value={{ sections, setSections, selectedSection, setSelectedSection }}>
+      {children}
+    </ApplicationContext.Provider>
+  );
 };
 
-export const useAuth = () => {
-    const context = useContext(AuthContext);
-    if (!context) {
-        throw new Error('useAuth must be used within an AuthProvider');
-    }
-    return context;
+export const useApplicationContext = () => {
+  const context = useContext(ApplicationContext);
+  if (!context) {
+    throw new Error('useApplicationContext must be used within an ApplicationContextProvider');
+  }
+  return context;
 };

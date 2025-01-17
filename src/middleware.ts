@@ -1,12 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { validateAndRefreshToken } from './lib/auth'
+import {fetchSectionNames} from "@/utils/osmUtils";
 
 export async function middleware(request: NextRequest) {
-  console.log('Middleware is running for:', request.url);
-
   const { response, accessToken } = await validateAndRefreshToken(request);
-
-  console.log('Running middleware');
 
   if (response) {
     // Either redirect to login or update cookies after refresh
@@ -14,7 +11,8 @@ export async function middleware(request: NextRequest) {
   }
 
   // Token is valid; proceed with the request
-  console.log('Valid access token:', accessToken);
+  const sectionNames = await fetchSectionNames(accessToken!);
+  request.headers.set('section-names', JSON.stringify(sectionNames));
   return NextResponse.next();
 }
 
