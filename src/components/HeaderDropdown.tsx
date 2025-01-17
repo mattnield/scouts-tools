@@ -51,9 +51,6 @@ const HeaderDropdown: React.FC = () => {
 
   return (
     <div className="flex items-center space-x-2">
-      <label htmlFor="sectionDropdown" className="text-gray-700 font-medium">
-        Choose a section:
-      </label>
       <select
         id="sectionDropdown"
         value={selectedSection?.sectionid || ''}

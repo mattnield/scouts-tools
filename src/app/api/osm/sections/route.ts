@@ -6,13 +6,17 @@ import { Term } from '@/models/Term';
 
 function processSectionsAndTerms(apiResponse: any): Section[] {
   // Extract section information
-  const sections: Section[] = apiResponse.globals.roles.map((role: any) => ({
-    groupname: role.groupname,
-    groupid: role.groupid,
-    sectionname: role.sectionname,
-    sectionid: role.sectionid,
-    section: role.section,
-  }));
+  const allowedSections = ['squirrels', 'beavers', 'cubs', 'scouts', 'explorers', 'network']; // for filtering out unwanted sections
+  const sections: Section[] = apiResponse.globals.roles
+    .filter((role: any) => allowedSections.includes(role.section))
+    .map((role: any) => ({
+      groupname: role.groupname,
+      groupid: role.groupid,
+      sectionname: role.sectionname,
+      sectionid: role.sectionid,
+      section: role.section,
+    }));
+
 
   // Extract terms
   const terms: Record<string, Term[]> = apiResponse.globals.terms;
