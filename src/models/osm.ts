@@ -20,6 +20,46 @@ export interface Badge {
   level: string | boolean; // Level of the badge, can be "Lvl X" or `false`
 }
 
+export interface BadgeField {
+  name: string;         // Name of the field
+  field: string;        // Unique field identifier
+  width: string;        // Width of the field for display
+  formatter?: string;   // Optional formatter function
+  tooltip?: string;     // Tooltip text for the field
+  module?: string;      // Associated module
+  section_id?: string;  // Section ID for the badge field
+  sameas?: string;      // Reference to another field
+  editable?: string;    // Editable status ("true" or "false")
+}
+
+export interface BadgeDetails {
+  badge_id: string;
+  badge_version: string;
+  shortname: string;
+  badge_identifier: string;
+  name: string;
+  picture: string;
+  description: string;
+  parents_description?: string;
+  config?: string;
+  portal_config?: string;
+  userid?: string;
+  sharing?: string;
+  latest?: string;
+  badge_order?: string;
+  group_name?: string;
+  created_at?: string;
+  lastupdated?: string;
+  type_id?: string;
+}
+
+export interface BadgeStructure {
+  badgeId: string;        // Badge ID
+  badgeVersion: string;   // Badge version
+  details: BadgeDetails;  // Badge details object
+  fields: BadgeField[];   // Array of BadgeField representing rows from the second `rows` element
+}
+
 export interface Member {
   firstname: string;         // First name of the member
   lastname: string;          // Last name of the member
