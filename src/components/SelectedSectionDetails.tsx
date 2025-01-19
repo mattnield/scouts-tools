@@ -20,20 +20,7 @@ const SelectedSectionDetails: React.FC<SelectedSectionDetailsProps> = ({ section
       <h2 className="text-xl font-semibold text-indigo-600">{section.sectionname} ({section.groupname})</h2>
       <Image src={imageUrl} alt={section.section} width={0} height={0} sizes="100vw" style={{ width: '5rem', height: 'auto' }} />
       {section.latestTerm ? (
-        <div>
-          <h3 className="text-lg font-medium text-gray-700">Latest Term:</h3>
-          <ul className="list-disc pl-5">
-            <li>
-              <strong>Name:</strong> {section.latestTerm.name}
-            </li>
-            <li>
-              <strong>Start Date:</strong> {section.latestTerm.startdate}
-            </li>
-            <li>
-              <strong>End Date:</strong> {section.latestTerm.enddate}
-            </li>
-          </ul>
-        </div>
+        <p><strong>Current Term: </strong>{section.latestTerm.name}</p>
       ) : (
         <p className="text-gray-500">No terms available for this section.</p>
       )}

@@ -3,6 +3,7 @@
 import React from 'react';
 import { useApplicationContext } from '../context/ApplicationContext';
 import SelectedSectionDetails from '@/components/SelectedSectionDetails';
+import ChiefScoutSummary from '@/components/chief-scout/ChiefScoutSummary';
 
 export default function HomePage() {
   const { selectedSection } = useApplicationContext();
@@ -14,6 +15,7 @@ export default function HomePage() {
   return (
     <div className="space-y-4">
       <SelectedSectionDetails section={selectedSection} />
+      <ChiefScoutSummary />
     </div>
   );
 }

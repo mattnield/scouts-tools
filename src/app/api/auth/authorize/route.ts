@@ -20,7 +20,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
 
   // Store the code_verifier securely (e.g., in a session or cookie)
   const url = `${baseUrl}?client_id=${process.env.CLIENT_ID}&redirect_uri=${process.env.REDIRECT_URI}&response_type=code&scope=${process.env.SCOPE}&code_challenge=${codeChallenge}&code_challenge_method=S256`;
-  console.log(url);
+
   const response = NextResponse.redirect(url);
   response.cookies.set('code_verifier', codeVerifier, {
     httpOnly: true,

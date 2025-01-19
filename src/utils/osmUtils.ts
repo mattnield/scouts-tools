@@ -1,28 +1,44 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Member } from '@/models/Member';
 import axios from 'axios';
-import {useApplicationContext} from "@/context/ApplicationContext";
 
-/**
- * Fetch section names from the Online Scout Manager API.
- * @returns A promise resolving to an array of section names.
- */
-export async function fetchSectionNames(accessToken: string): Promise<string[]> {
-    try {
-        console.log(accessToken);
-        const response = await axios.get('https://www.onlinescoutmanager.co.uk/ext/generic/startup/?action=getData', {
-            headers: {
-                Authorization: `Bearer ${accessToken}`,
-            },
-        });
+const API_BASE_URL = 'https://www.onlinescoutmanager.co.uk';
 
-        const dataString = response.data;
-        const unescapedDataString = decodeURIComponent(dataString);
-        const jsonData = JSON.parse(unescapedDataString.replace(/^var data_holder = /, '').replace(/;$/, ''));
+export async function fetchMemberBadges(accessToken: string, sectionId: string, termId: string, sectionType: string): Promise<Member[]> {
+  try {
+    // Build the request URL and parameters
+    const url = `${API_BASE_URL}/ext/badges/badgesbyperson/`;
+    const params = {
+      action: 'loadBadgesByMember',
+      section: sectionType,
+      sectionid: sectionId,
+      term_id: termId,
+    };
 
-        const sectionNames = jsonData.globals.roles.map((role: { sectionname: string }) => role.sectionname);
+    console.clear();
+    console.log(params);
+    console.log(`accessToken: ${accessToken}`);
+    // return new Array<Member>;
+    // Make the API request using Axios
+    const response = await axios.get(url, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`, // If the API requires an Authorization header
+      },
+      params,
+    });
 
-        return sectionNames;
-    } catch (error: any) {
-        console.error('Error fetching section names:', error.response?.data || error.message);
-        throw new Error('Failed to fetch section names');
+    // Parse and process the response
+    const data = response.data;
+    if (!data || !data.data) {
+      return [];
     }
+
+    const members = response.data.data as Member[];
+    console.log(members);
+    // Extract members using JSONPath-like logic
+    return members;
+  } catch (error) {
+    console.error('Error fetching members:', error);
+    throw new Error('Failed to fetch members');
+  }
 }
