@@ -16,9 +16,7 @@ export async function fetchMemberBadges(accessToken: string, sectionId: string, 
     };
 
     console.clear();
-    console.log(params);
-    console.log(`accessToken: ${accessToken}`);
-    // return new Array<Member>;
+
     // Make the API request using Axios
     const response = await axios.get(url, {
       headers: {

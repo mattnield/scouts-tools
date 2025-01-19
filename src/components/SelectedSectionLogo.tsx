@@ -12,7 +12,6 @@ const SelectedSectionLogo: React.FC<SelectedSectionLogoProps> = ({ section }) =>
 
   const allowedSections = ['squirrels', 'beavers', 'cubs', 'scouts', 'explorers', 'network'];
   const sectionLogoName = allowedSections.includes(section.section) ? section.section : 'tsa';
-  console.log(allowedSections.includes(section.section));
   const imageUrl = `/images/sections/${sectionLogoName}-logo.png`;
 
   return (

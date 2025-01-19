@@ -8,8 +8,6 @@ export async function GetBadgesByMember(section: Section): Promise<Member[] | un
   try {
     const requestUrl = `/api/osm/members?sectionid=${section?.sectionid}&termid=${section?.latestTerm?.termid || ''}&section=${section?.section}`;
 
-    console.log(requestUrl);
-    // return;
     const response = await fetch(requestUrl);
     if (!response.ok) {
       throw new Error(`Failed to fetch sections: ${response.statusText}`);

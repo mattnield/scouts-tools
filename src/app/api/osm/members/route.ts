@@ -14,8 +14,5 @@ export async function GET(request: NextRequest) {
 
   const memberBadges = await fetchMemberBadges(accessToken, sectionId, termId, sectionType);
 
-  console.log('calling /api/osm/members');
-  console.log(memberBadges);
-
   return NextResponse.json(memberBadges);
 }
