@@ -27,7 +27,7 @@ const ChiefScoutSummary: React.FC = () => {
         setMembers(fetchedMembers!);
         const fetchedBadgeStructure = await GetBadgesByType(selectedSection, BadgeType.Challenge);
         console.log(`Found ${fetchedBadgeStructure?.length} badges`);
-        let sortedBadges = fetchedBadgeStructure!.sort((a, b) => { if ((a.details.badge_order || 1) < (b.details.badge_order || 1)) { return -1; } else { return 1; } return 0; });
+        const sortedBadges = fetchedBadgeStructure!.sort((a, b) => { if ((a.details.badge_order || 1) < (b.details.badge_order || 1)) { return -1; } else { return 1; } return 0; });
         setBadgeStructure(sortedBadges);
       } catch (err) {
         console.error('Error fetching members:', err);

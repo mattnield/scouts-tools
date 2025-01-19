@@ -3,7 +3,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useApplicationContext } from '../context/ApplicationContext';
-import { Section } from '../models/Section'; // Import the model
+import { Section } from '../models/osm'; // Import the model
 
 const HeaderDropdown: React.FC = () => {
   const { sections, setSections, selectedSection, setSelectedSection } = useApplicationContext();

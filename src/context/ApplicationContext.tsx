@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
-import { Section } from '../models/Section'; // Import Section model
+import { Section } from '@/models/osm'; // Import Section model
 
 interface ApplicationContextType {
   sections: Section[]; // Array of Section objects

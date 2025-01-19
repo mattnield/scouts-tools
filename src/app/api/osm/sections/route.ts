@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextRequest, NextResponse } from 'next/server';
 import axios from 'axios';
-import { Section } from '@/models/Section';
-import { Term } from '@/models/Term';
+import { Section, Term } from '@/models/osm';
 
 function processSectionsAndTerms(apiResponse: any): Section[] {
   // Extract section information
