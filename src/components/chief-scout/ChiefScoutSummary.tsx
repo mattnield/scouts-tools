@@ -54,21 +54,23 @@ const ChiefScoutSummary: React.FC = () => {
 
   return (
     <div>
-      <table className="table-auto border-collapse border border-gray-300 w-full text-center">
+      <table className="table-auto w-full text-center">
         <thead>
-          <tr className="border border-gray-300 px-2 py-2">
-            <td className="border border-gray-300 px-2 py-2"></td>
+          <tr className="px-2 py-2">
+            <td className="px-1 py-1"></td>
             {badgeStructure.map((badge) => (
-              <td className="border border-gray-300 px-2 py-2 text-center" key={badge.badgeId}><Image src={`https://www.onlinescoutmanager.co.uk/${badge.details.picture}`} alt={badge.details.name} width={32} height={32} title={badge.details.name} ></Image></td>
+              <td className="px-1 py-1 text-center" key={badge.badgeId}>
+                <Image src={`https://www.onlinescoutmanager.co.uk/${badge.details.picture}`} alt={badge.details.name} width={48} height={48} title={badge.details.name} ></Image>
+              </td>
             ))}
           </tr>
           {members.map((member) => (
             <tr key={member.scout_id} className="odd:bg-gray-100 even:bg-gray-200">
-              <td className="border border-gray-300 px-2 py-2">{member.firstname} {member.lastname}</td>
+              <td className="px-1 py-1">{member.firstname} {member.lastname}</td>
               {badgeStructure.map((badge, index) => {
                 const completed = member.badges.find(b => b.badge_id === badge!.badgeId)?.completed;
                 return (
-                  <td key={index} className="border border-gray-300 px-2 py-2" title={completed === '1' ? 'Complete' : completed === '0' ? 'Started' : 'Not Started'}>
+                  <td key={index} className="px-1 py-1 text-3xl" title={completed === '1' ? 'Complete' : completed === '0' ? 'Started' : 'Not Started'}>
                     {completed === '1' ? '●' : completed === '0' ? '○' : ''}
                   </td>
                 );
