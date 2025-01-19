@@ -32,7 +32,6 @@ export async function fetchMemberBadges(accessToken: string, sectionId: string, 
     }
 
     const members = response.data.data as Member[];
-    console.log(members);
     // Extract members using JSONPath-like logic
     return members;
   } catch (error) {
