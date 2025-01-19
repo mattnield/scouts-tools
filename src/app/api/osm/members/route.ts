@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextRequest, NextResponse } from 'next/server';
 import { fetchMemberBadges } from '@/utils/osmUtils';
-import { Member } from '@/models/Member';
 
 // API Route handler
 export async function GET(request: NextRequest) {

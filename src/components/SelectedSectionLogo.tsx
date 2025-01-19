@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Section } from '../models/Section';
+import { Section } from '../models/osm';
 import Image from 'next/image';
 
 interface SelectedSectionLogoProps {

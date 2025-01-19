@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Member } from '@/models/Member';
+import { Member } from '@/models/osm';
 import axios from 'axios';
 
 const API_BASE_URL = 'https://www.onlinescoutmanager.co.uk';

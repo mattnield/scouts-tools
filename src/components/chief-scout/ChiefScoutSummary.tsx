@@ -3,16 +3,13 @@
 import React, { useEffect, useState } from 'react';
 import { GetBadgesByMember } from '@/utils/apiWrapper';
 import { useApplicationContext } from '@/context/ApplicationContext';
-import { Member } from '@/models/Member';
-import { Section } from '@/models/Section';
+import { Member, Section } from '@/models/osm';
 
 const ChiefScoutSummary: React.FC = () => {
   const { selectedSection } = useApplicationContext();
   const [members, setMembers] = useState<Member[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
-  console.log('Chief Scout Summary');
 
   useEffect(() => {
     if (!selectedSection) {
@@ -48,8 +45,6 @@ const ChiefScoutSummary: React.FC = () => {
   if (error) {
     return <p className="text-red-500">{error}</p>;
   }
-
-  console.log(members);
 
   return (
     <div>

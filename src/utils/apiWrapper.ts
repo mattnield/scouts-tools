@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
 
-import { Member } from "@/models/Member"
-import { Section } from "@/models/Section";
+import { Member, Section } from "@/models/osm";
 
 export async function GetBadgesByMember(section: Section): Promise<Member[] | undefined> {
   try {
