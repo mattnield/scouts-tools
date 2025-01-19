@@ -4,6 +4,16 @@ This project is designed to replace a .NET web application that provided infomrm
 
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## Configuration
+
+Add a `.env` file:
+
+```
+CLIENT_ID=<YOUR_OSM_CLIENT_ID>
+REDIRECT_URI=https://localhost:3000/api/auth/callback
+SCOPE=section:badge:read section:member:read
+```
+
 ## State Management
 
 ### 1. Centralized State Management
