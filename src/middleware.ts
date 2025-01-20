@@ -17,5 +17,13 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/'], // Apply to all routes
+  matcher: [    /*
+    Match all routes excluding:
+    - `_next/static/*` (Next.js static files)
+    - `_next/image/*` (Next.js optimized images)
+    - `/favicon.ico` (Default favicon)
+    - `/public/*` (Static assets in the public folder)
+    - `/api/auth/*` (Authentication API routes)
+  */
+    '/((?!_next/static|_next/image|favicon.ico|public|api/auth).*)',], // Apply to all routes (Excluding Static Assets)
 };

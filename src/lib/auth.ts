@@ -7,6 +7,9 @@ import axios from 'axios';
  * @returns An object containing the access token or a redirect response
  */
 export async function validateAndRefreshToken(request: NextRequest): Promise<{ accessToken?: string; response?: NextResponse }> {
+
+  console.log(`Middleware applied for: ${request.url}`);
+
   const accessToken = request.cookies.get('access_token')?.value;
   const refreshToken = request.cookies.get('refresh_token')?.value;
 
