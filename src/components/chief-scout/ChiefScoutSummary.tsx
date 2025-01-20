@@ -54,19 +54,20 @@ const ChiefScoutSummary: React.FC = () => {
 
   return (
     <div>
-      <table className="table-auto w-full text-center">
+      <h2 className='text-xl font-semibold text-violet-900'>Chief Scout Award Summary for {selectedSection.sectionname}</h2>
+      <table className="table-auto w-full text-center max-w-fit">
         <thead>
           <tr className="px-2 py-2">
-            <td className="px-1 py-1"></td>
+            <th className="sticky top-0 px-1 py-1 bg-white"></th>
             {badgeStructure.map((badge) => (
-              <td className="px-1 py-1 text-center" key={badge.badgeId}>
+              <th className="sticky top-0 px-1 py-1 text-center bg-white" key={badge.badgeId}>
                 <Image src={`https://www.onlinescoutmanager.co.uk/${badge.details.picture}`} alt={badge.details.name} width={48} height={48} title={badge.details.name} ></Image>
-              </td>
+              </th>
             ))}
           </tr>
           {members.map((member) => (
             <tr key={member.scout_id} className="odd:bg-gray-100 even:bg-gray-200">
-              <td className="px-1 py-1">{member.firstname} {member.lastname}</td>
+              <td className="px-1 py-1 text-left">{member.firstname} {member.lastname}</td>
               {badgeStructure.map((badge, index) => {
                 const completed = member.badges.find(b => b.badge_id === badge!.badgeId)?.completed;
                 return (
