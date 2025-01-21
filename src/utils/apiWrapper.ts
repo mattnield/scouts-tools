@@ -20,6 +20,23 @@ export async function GetBadgesByMember(section: Section): Promise<Member[] | un
   return;
 }
 
+export async function GetMember(section: Section, memberId: string): Promise<Member> {
+  try {
+    const requestUrl = `/api/osm/member?sectionid=${section?.sectionid}&termid=${section?.latestTerm?.termid || ''}&section=${section?.section}&scoutid=${memberId}&context=member`;
+
+    const response = await fetch(requestUrl);
+    if (!response.ok) {
+      throw new Error(`Failed to fetch sections: ${response.statusText}`);
+    }
+    const data: Member = await response.json(); //
+    return data;
+  } catch (err: any) {
+    console.log(err.message);
+  }
+
+  return { scoutid: 0 } as Member;
+}
+
 export async function GetBadgesByType(section: Section, type: BadgeType): Promise<BadgeStructure[] | undefined> {
   try {
     const requestUrl = `/api/osm/badges-by-type?sectionid=${section?.sectionid}&termid=${section?.latestTerm?.termid || ''}&section=${section?.section}&type=${type}`;
