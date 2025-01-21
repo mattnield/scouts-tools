@@ -5,6 +5,8 @@ import { GetBadgesByMember, GetBadgesByType } from '@/utils/apiWrapper';
 import { useApplicationContext } from '@/context/ApplicationContext';
 import { BadgeStructure, BadgeType, Member, Section } from '@/models/osm';
 import Image from 'next/image';
+import Loading from '../Loading';
+import Link from 'next/link';
 
 const ChiefScoutSummary: React.FC = () => {
   const { selectedSection } = useApplicationContext();
@@ -45,7 +47,7 @@ const ChiefScoutSummary: React.FC = () => {
   }
 
   if (loading) {
-    return <p>Loading members...</p>;
+    return <Loading width='90%' height='300px' color='#eee' borderRadius='8px' />;
   }
 
   if (error) {
@@ -58,16 +60,16 @@ const ChiefScoutSummary: React.FC = () => {
       <table className="table-auto w-full text-center max-w-fit">
         <thead>
           <tr className="px-2 py-2">
-            <th className="sticky top-0 px-1 py-1 bg-white"></th>
+            <th className="sticky top-0 px-1 py-1 bg-inherit"></th>
             {badgeStructure.map((badge) => (
-              <th className="sticky top-0 px-1 py-1 text-center bg-white" key={badge.badgeId}>
+              <th className="sticky top-0 px-1 py-1 text-center bg-inherit" key={badge.badgeId}>
                 <Image src={`https://www.onlinescoutmanager.co.uk/${badge.details.picture}`} alt={badge.details.name} width={48} height={48} title={badge.details.name} ></Image>
               </th>
             ))}
           </tr>
           {members.map((member) => (
             <tr key={member.scout_id} className="odd:bg-gray-100 even:bg-gray-200">
-              <td className="px-1 py-1 text-left">{member.firstname} {member.lastname}</td>
+              <td className="px-1 py-1 text-left"><Link href={`/member/${member.scout_id}`}>{member.firstname} {member.lastname}</Link></td>
               {badgeStructure.map((badge, index) => {
                 const completed = member.badges.find(b => b.badge_id === badge!.badgeId)?.completed;
                 return (

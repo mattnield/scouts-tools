@@ -14,7 +14,7 @@ const Loading: React.FC<LoadingProps> = ({
   color = '#e0e0e0',
 }) => {
   return (
-    <div
+    <div className='align-middle text-center'
       style={{
         width,
         height,
@@ -22,7 +22,7 @@ const Loading: React.FC<LoadingProps> = ({
         backgroundColor: color,
         animation: 'pulse 1.5s infinite',
       }}
-    />
+    >Loading...</div>
   );
 };
 
