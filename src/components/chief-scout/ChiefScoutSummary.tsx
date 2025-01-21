@@ -69,7 +69,7 @@ const ChiefScoutSummary: React.FC = () => {
           </tr>
           {members.map((member) => (
             <tr key={member.scout_id} className="odd:bg-gray-100 even:bg-gray-200">
-              <td className="px-1 py-1 text-left"><Link href={`/member/${member.scout_id}`}>{member.firstname} {member.lastname}</Link></td>
+              <td className="px-1 py-1 text-left text-violet-600"><Link href={`/member/${member.scout_id}`}>{member.firstname} {member.lastname}</Link></td>
               {badgeStructure.map((badge, index) => {
                 const completed = member.badges.find(b => b.badge_id === badge!.badgeId)?.completed;
                 return (
