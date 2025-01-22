@@ -4,6 +4,7 @@ import React from 'react';
 import { ApplicationContextProvider } from '../context/ApplicationContext';
 import './globals.css';
 import SectionSelector from '@/components/SectionSelector';
+import Link from 'next/link';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -14,6 +15,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <header className="bg-white shadow-md">
             <div className="container mx-auto px-4 py-4 flex justify-between items-center">
               <h1 className="text-2xl font-bold text-indigo-600">Scouts Tools</h1>
+              <Link href="/">Dashboard</Link>
+              <Link href="/chief-scout">Chief Scout Award</Link>
               <SectionSelector />
             </div>
           </header>

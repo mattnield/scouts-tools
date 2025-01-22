@@ -53,6 +53,9 @@ export interface BadgeDetails {
   type_id?: string;
 }
 
+/**
+ * Represents a member's progress for a badge.
+ */
 export interface BadgeStructure {
   badgeId: string;        // Badge ID
   badgeVersion: string;   // Badge version
@@ -78,6 +81,17 @@ export interface Member {
   badges: Badge[];           // Array of badges assigned to the scout
 }
 
+export interface MemberBadgeProgress {
+  scoutid: number; // Scout ID
+  awarded: string; // Number of awards
+  completed: string; // Number of completed badges
+  awardeddate: string; // Date the badge was awarded
+  [key: string]: string | number | boolean; // Allow additional fields with numbered keys
+}
+
+/**
+ * Represents a section
+ */
 export interface Section {
   groupname: string;
   groupid: string;
