@@ -51,10 +51,6 @@ export async function fetchBadgeProgress(accessToken: string, sectionId: string,
       badge_version: badgeVersion
     };
 
-    console.log(params);
-
-    return [];
-
     // Make the API request using Axios
     const response = await axios.get(url, {
       headers: {
@@ -62,14 +58,11 @@ export async function fetchBadgeProgress(accessToken: string, sectionId: string,
       },
       params,
     });
-
-    // Parse and process the response
-    const data = response.data;
-    if (!data || !data.data) {
+    if (!response.data || !response.data.items) {
       return [];
     }
 
-    const members = response.data.data as MemberBadgeProgress[];
+    const members = response.data.items as MemberBadgeProgress[];
     // Extract members using JSONPath-like logic
     return members;
   } catch (error) {

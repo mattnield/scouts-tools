@@ -2,8 +2,6 @@ import { NextRequest, NextResponse } from 'next/server';
 import axios from 'axios';
 
 export async function GET(request: NextRequest): Promise<NextResponse> {
-  console.log('Refreshing access token.');
-
   const refreshToken = request.cookies.get('refresh_token')?.value;
 
   if (!refreshToken) {

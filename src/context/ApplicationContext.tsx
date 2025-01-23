@@ -3,7 +3,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
 import { BadgeStructure, BadgeType, Member, MemberBadgeProgress, Section } from '@/models/osm'; // Import Section model
-import { GetBadgeProgress, GetBadgesByMember, GetBadgesByType } from '@/utils/apiWrapper';
+import { GetBadgesByMember, GetBadgesByType } from '@/utils/apiWrapper';
 
 interface ApplicationContextType {
   sections: Section[]; // Array of Section objects
@@ -38,7 +38,6 @@ export const ApplicationContextProvider: React.FC<{ children: React.ReactNode }>
 
   // Clear section-specific data when section changes
   useEffect(() => {
-    console.log('Updateing selected section.')
     setMembers(null);
     setBadgeStructure(null);
     setBadgeProgress(null);
@@ -55,7 +54,6 @@ export const ApplicationContextProvider: React.FC<{ children: React.ReactNode }>
   };
 
   const getMembers = async (): Promise<Member[]> => {
-    console.log('Getting Members');
     if (members) return members;
     if (!selectedSection) throw new Error('No section selected');
 
@@ -74,13 +72,11 @@ export const ApplicationContextProvider: React.FC<{ children: React.ReactNode }>
   };
 
   const getBadgeStructure = async (): Promise<BadgeStructure[]> => {
-    console.log('Getting Badge Structure');
     if (badgeStructure) return badgeStructure;
     if (!selectedSection) throw new Error('No section selected');
 
     try {
       const fetchedBadgeStructure = await GetBadgesByType(selectedSection, BadgeType.Challenge);
-      console.log(fetchedBadgeStructure);
       setBadgeStructure(fetchedBadgeStructure); // Cache the fetched members
       if (badgeStructure)
         return badgeStructure;

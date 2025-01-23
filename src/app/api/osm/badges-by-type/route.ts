@@ -4,8 +4,6 @@ import { fetchBadgesByType } from '@/utils/osmApiUtils';
 
 // API Route handler
 export async function GET(request: NextRequest) {
-  console.log('Starting api/osm/badges-by-type');
-
   const accessToken = request.cookies.get('access_token')?.value || '';
   const { searchParams } = new URL(request.url);
   const sectionId = searchParams.get('sectionid') || '';

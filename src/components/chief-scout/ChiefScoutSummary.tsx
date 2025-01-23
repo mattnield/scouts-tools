@@ -55,12 +55,12 @@ const ChiefScoutSummary: React.FC = () => {
   return (
     <div>
       <h2 className='text-xl font-semibold text-violet-900'>Chief Scout Award Summary for {selectedSection!.sectionname}</h2>
-      <table className="table-auto w-full text-center max-w-fit">
+      <table className="table-auto w-full text-center max-w-fit bg-white">
         <thead>
           <tr className="px-2 py-2">
-            <th className="sticky top-0 px-1 py-1 bg-inherit"></th>
+            <th className="sticky top-0 px-1 py-1 bg-white"></th>
             {localBadgeStructure!.map((badge) => (
-              <th className="sticky top-0 px-1 py-1 text-center bg-inherit" key={badge.badgeId}>
+              <th className="sticky top-0 px-1 py-1 text-center bg-white" key={badge.badgeId}>
                 <Image src={`https://www.onlinescoutmanager.co.uk/${badge.details.picture}`} alt={badge.details.name} width={48} height={48} title={badge.details.name} ></Image>
               </th>
             ))}

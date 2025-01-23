@@ -53,6 +53,11 @@ export interface BadgeDetails {
   type_id?: string;
 }
 
+export interface BadgeMemberProgress {
+  badgeId: string;
+  memberProgress: MemberBadgeProgress[];
+}
+
 /**
  * Represents a member's progress for a badge.
  */
@@ -82,10 +87,9 @@ export interface Member {
 }
 
 export interface MemberBadgeProgress {
-  scoutid: number; // Scout ID
+  scoutid: string; // Scout ID
   awarded: string; // Number of awards
   completed: string; // Number of completed badges
-  awardeddate: string; // Date the badge was awarded
   [key: string]: string | number | boolean; // Allow additional fields with numbered keys
 }
 

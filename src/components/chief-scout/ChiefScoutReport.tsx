@@ -1,81 +1,111 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { GetBadgesByMember, GetBadgesByType, GetBadgeProgress } from '@/utils/apiWrapper';
-import { ApplicationContextProvider, useApplicationContext } from '@/context/ApplicationContext';
-import { BadgeField, BadgeStructure, BadgeType, Member, MemberBadgeProgress, Section } from '@/models/osm';
+import { useApplicationContext } from '@/context/ApplicationContext';
 import Loading from '../Loading';
 import Link from 'next/link';
+import { BadgeField, BadgeStructure, Member, MemberBadgeProgress } from '@/models/osm';
+import { GetBadgeProgress } from '@/utils/apiWrapper';
+
+interface LocalBadgeProgress { [badegId: string]: MemberBadgeProgress[] }
 
 const ChiefScoutReport: React.FC = () => {
-  // const context = ApplicationContextProvider();
-  // const {members, getMembers} = context;
-  // const [loading, setLoading] = useState(false);
-  // const [error, setError] = useState<string | null>(null);
+  const { selectedSection, getMembers, getBadgeStructure } = useApplicationContext();
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [localMembers, setLocalMembers] = useState<Member[] | null>(null);
+  const [localBadgeStructure, setLocalBadgeStructure] = useState<BadgeStructure[] | null>(null);
+  const [localBadgeProgress, setLocalBadgeProgress] = useState<LocalBadgeProgress>({});
 
-  // useEffect(() => {
-  //   if (!selectedSection) {
-  //     return;
-  //   }
+  useEffect(() => {
+    const fetchData = async () => {
+      if (!selectedSection) {
+        setLocalMembers(null);
+        setLocalBadgeStructure(null);
+        setError('No section selected.');
+        setLoading(false);
+        return;
+      }
 
-  //   getMembers();
+      setLoading(true);
+      setError(null);
 
-  //   const fetchMembers = async (section: Section) => {
-  //     setLoading(true);
-  //     setError(null);
+      try {
+        const fetchedMembers = await getMembers();
+        const fetchedBadgeStructure = await getBadgeStructure();
 
-  //     try {
-  //       getMembers();
-  //       const fetchedBadgeStructure = await GetBadgesByType(selectedSection, BadgeType.Challenge);
-  //       console.log(`Found ${fetchedBadgeStructure?.length} badges`);
-  //       const sortedBadges = fetchedBadgeStructure!.sort((a, b) => { if ((a.details.badge_order || 1) < (b.details.badge_order || 1)) { return -1; } else { return 1; } return 0; });
-  //       setBadgeStructure(sortedBadges);
-  //       badgeStructure.forEach(async (badge: BadgeStructure) => {
-  //         // Get progress
-  //         console.log(badge);
-  //         const nextBadge = await GetBadgeProgress(selectedSection, badge);
-  //       });
-  //     } catch (err) {
-  //       console.error('Error fetching members:', err);
-  //       setError('Failed to load members. Please try again later.');
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
+        setLocalMembers(fetchedMembers);
+        setLocalBadgeStructure(fetchedBadgeStructure);
 
-  //   fetchMembers(selectedSection);
-  // }, [selectedSection], [getMembers]);
+        // Get member badge progress
+        if (fetchedBadgeStructure) {
+          fetchedBadgeStructure.forEach(async (badge: BadgeStructure) => {
+            const newBadgeProgress = await GetBadgeProgress(selectedSection, badge);
+            if (newBadgeProgress) setLocalBadgeProgress((currentProgress) => ({
+              ...currentProgress,
+              [badge.badgeId]: newBadgeProgress,
+            }));
+          });
+        }
+      } catch (err) {
+        console.error('Error loading chief scouts summary: ', err);
+        setError('Failed to load Chief Scouts Summary. Please try again later.');
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  // if (!selectedSection) {
-  //   return <p>Please select a section to view its members.</p>;
-  // }
+    fetchData();
+  }, [selectedSection, getMembers, getBadgeStructure]);
 
-  // if (loading) {
-  //   return <Loading width='90%' height='300px' color='#eee' borderRadius='8px' />;
-  // }
+  const progressDisplay = (fieldId: string, badgeId: string, memberId: string): string => {
+    if (!(badgeId in localBadgeProgress)) return '';
+    const memberProgress = localBadgeProgress[badgeId].find((m: MemberBadgeProgress) => m.scoutid == memberId);
+    if (!memberProgress) return '';
 
-  // if (error) {
-  //   return <p className="text-red-500">{error}</p>;
-  // }
+    if (memberProgress.completed == "1") {
+      console.log(`Member ${memberId} compelted badge ${badgeId}`)
+      return '●';
+    }
+
+    if (fieldId in memberProgress) {
+      if (memberProgress[fieldId].toString().toLowerCase().startsWith('x')) return '○';
+      if (memberProgress[fieldId].toString() != '') return '●';
+    }
+
+    return '';
+  }
+
+  if (!selectedSection) {
+    return <p>Please select a section to view its members.</p>;
+  }
+
+  if (loading) {
+    return <Loading width='90%' height='300px' color='#eee' borderRadius='8px' />;
+  }
+
+  if (error) {
+    return <p className="text-red-500">{error}</p>;
+  }
 
   return (
     <div>
       <h2 className='text-xl font-semibold text-violet-900'>Chief Scout Award Summary for {selectedSection.sectionname}</h2>
-      {/* <table className="table-auto w-full text-center max-w-fit">
+      <table className="table-auto w-full text-center max-w-fit">
         <thead>
           <tr className="px-2 py-2">
-            <th className="px-1 py-1 bg-inherit">Badge</th>
-            <th className="px-1 py-1 bg-inherit">Section</th>
-            <th className="px-1 py-1 bg-inherit">Requirement</th>
-            {members.map((member) => (
-              <th className="transform -rotate-90 whitespace-nowrap px-0 py-0 border border-gray-300 align-bottom text-left" style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)' }} key={member.scout_id}>
+            <th className="sticky top-0 border border-gray-300 px-1 py-1 bg-white">Badge</th>
+            <th className="sticky top-0 border border-gray-300 px-1 py-1 bg-white">Section</th>
+            <th className="sticky top-0 border border-gray-300 px-1 py-1 bg-white">Requirement</th>
+            {localMembers!.map((member) => (
+              <th className="sticky top-0 transform -rotate-90 whitespace-nowrap px-0 py-0 border border-gray-300 align-bottom text-left bg-white" style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)' }} key={member.scout_id}>
                 <Link href={`/member/${member.scout_id}`}>{member.firstname} {member.lastname}</Link>
               </th>
             ))}
           </tr>
         </thead>
         <tbody>
-          {badgeStructure.map((badge) => {
+          {localBadgeStructure!.map((badge) => {
             const sectionsGrouped = groupFieldsBySection(badge.fields);
             // TODO: Load the badge progress
 
@@ -84,7 +114,7 @@ const ChiefScoutReport: React.FC = () => {
                 {Object.entries(sectionsGrouped).map(([section, fields], sectionIndex) => (
                   <React.Fragment key={`${badge.badgeId}-${section}`}>
                     {fields.map((field, fieldIndex) => (
-                      <tr key={`${badge.badgeId}-${section}-${field.field}`}>
+                      <tr key={`${badge.badgeId}-${section}-${field.field}`} className="odd:bg-gray-100 even:bg-gray-200">
                         {sectionIndex === 0 && fieldIndex === 0 && (
                           <td
                             className="border border-gray-300 px-4 py-2"
@@ -101,13 +131,13 @@ const ChiefScoutReport: React.FC = () => {
                             {section}
                           </td>
                         )}
-                        {console.log(field)}
+
                         <td className="border border-gray-300 px-4 py-2" title={field.tooltip}>
-                          {field.name}<br />{field.field}
+                          {field.name}
                         </td>
-                        {members.map(member => (
-                          <td key={`${badge.badgeId}-${section}-${field.field}-${member.scout_id}`}>
-                            ●
+                        {localMembers!.map(member => (
+                          <td className="border border-gray-300 px-1 py-1 text-3xl" key={`${badge.badgeId}-${section}-${field.field}-${member.scout_id}`}>
+                            {progressDisplay(field.field, badge.badgeId, member.scoutid.toString())}
                           </td>
                         ))}
                       </tr>
@@ -118,7 +148,7 @@ const ChiefScoutReport: React.FC = () => {
             );
           })}
         </tbody>
-      </table> */}
+      </table>
     </div>
   );
 };

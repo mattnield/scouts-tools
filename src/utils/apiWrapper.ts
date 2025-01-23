@@ -47,9 +47,7 @@ export async function GetBadgesByType(section: Section, type: BadgeType): Promis
       throw new Error(`Failed to fetch sections: ${response.statusText}`);
     }
 
-    console.log('GetBadgesByType');
     const data: BadgeStructure[] = await response.json(); //
-    console.log(data);
     return data;
   } catch (err: any) {
     console.log(err.message);
@@ -67,17 +65,14 @@ export async function GetBadgesByType(section: Section, type: BadgeType): Promis
  */
 export async function GetBadgeProgress(section: Section, badge: BadgeStructure): Promise<MemberBadgeProgress[] | undefined> {
   try {
-    const requestUrl = `/api/osm/badge-progress?sectionid=${section?.sectionid}&termid=${section?.latestTerm?.termid || ''}&section=${section?.section}&badgeid=${badge.badgeId}&badgeversion=${badge.badgeVersion}}`;
-
+    const requestUrl = `/api/osm/badge-progress?sectionid=${section?.sectionid}&termid=${section?.latestTerm?.termid || ''}&section=${section?.section}&badgeid=${badge.badgeId}&badgeversion=${badge.badgeVersion}`;
     const response = await fetch(requestUrl);
 
     if (!response.ok) {
       throw new Error(`Failed to fetch sections: ${response.statusText}`);
     }
 
-    console.log('GetBadgesByType');
     const data: MemberBadgeProgress[] = await response.json(); //
-    console.log(data);
     return data;
   } catch (err: any) {
     console.log(err.message);

@@ -32,7 +32,6 @@ const MemberPage = () => {
   // Get member details (all?)
   const member = members.find((m: Member) => m.scoutid === Number(memberId))
 
-  console.log(`Membed Section ID: ${member?.sectionid}\nSelected Section ID: ${selectedSection?.sectionid}`)
   if (member?.sectionid != selectedSection?.sectionid) {
     return <p>This member is not in the currently selected section.</p>
   }
