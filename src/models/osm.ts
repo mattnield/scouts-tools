@@ -105,6 +105,15 @@ export interface Section {
   latestTerm?: Term;
 }
 
+export interface StartupData {
+  globals: StartupDataGlobals;
+}
+
+export interface StartupDataGlobals {
+  roles: Section[];
+  terms: { [key: string]: Term[] }
+}
+
 export interface Term {
   termid: string;
   sectionid: string;

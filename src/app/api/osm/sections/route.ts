@@ -1,14 +1,13 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextRequest, NextResponse } from 'next/server';
 import axios from 'axios';
-import { Section, Term } from '@/models/osm';
+import { Section, StartupData, Term } from '@/models/osm';
 
-function processSectionsAndTerms(apiResponse: any): Section[] {
+function processSectionsAndTerms(startupData: StartupData): Section[] {
   // Extract section information
   const allowedSections: string[] = ['squirrels', 'beavers', 'cubs', 'scouts', 'explorers', 'network']; // for filtering out unwanted sections
-  const sections: Section[] = apiResponse.globals.roles
-    .filter((role: any) => allowedSections.includes(role.section))
-    .map((role: any) => ({
+  const sections: Section[] = startupData.globals.roles
+    .filter((role: Section) => allowedSections.includes(role.section))
+    .map((role: Section) => ({
       groupname: role.groupname,
       groupid: role.groupid,
       sectionname: role.sectionname,
@@ -16,15 +15,11 @@ function processSectionsAndTerms(apiResponse: any): Section[] {
       section: role.section,
     }));
 
-
-  // Extract terms
-  const terms: Record<string, Term[]> = apiResponse.globals.terms;
-
   // Add the latest term for each section
-  sections.forEach((section) => {
-    const sectionTerms = terms[section.sectionid];
+  sections.forEach((section: Section) => {
+    const sectionTerms = startupData.globals.terms[section.sectionid];
     if (sectionTerms && sectionTerms.length > 0) {
-      section.latestTerm = sectionTerms.reduce((latest, current) =>
+      section.latestTerm = sectionTerms.reduce((latest: Term, current: Term) =>
         new Date(current.enddate) > new Date(latest.enddate) ? current : latest
       );
     }
@@ -47,10 +42,10 @@ export async function GET(request: NextRequest) {
     });
 
     const dataString = osmResponse.data;
-    const unescapedDataString = decodeURIComponent(dataString);
-    const jsonData = JSON.parse(unescapedDataString.replace(/^var data_holder = /, '').replace(/;$/, ''));
+    const unescapedDataString: string = decodeURIComponent(dataString);
+    const jsonData: StartupData = JSON.parse(unescapedDataString.replace(/^var data_holder = /, '').replace(/;$/, ''));
 
-    const sectionsWithTerms = processSectionsAndTerms(jsonData);
+    const sectionsWithTerms: Section[] = processSectionsAndTerms(jsonData);
     return NextResponse.json(sectionsWithTerms);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
