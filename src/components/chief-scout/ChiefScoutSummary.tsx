@@ -72,7 +72,7 @@ const ChiefScoutSummary: React.FC = () => {
                 const completed = member.badges.find((b: Badge) => b.badge_id === badge!.badgeId)?.completed;
                 return (
                   <td key={index} className="px-1 py-1 text-3xl" title={completed === '1' ? 'Complete' : completed === '0' ? 'Started' : 'Not Started'}>
-                    {completed === '1' ? '●' : completed === '0' ? '○' : ''}
+                    {completed === '1' ? '⬢' : completed === '0' ? '⬡' : ''}
                   </td>
                 );
               })}

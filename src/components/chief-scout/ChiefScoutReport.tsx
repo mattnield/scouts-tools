@@ -65,12 +65,12 @@ const ChiefScoutReport: React.FC = () => {
 
     if (memberProgress.completed == "1") {
       console.log(`Member ${memberId} compelted badge ${badgeId}`)
-      return '●';
+      return '⬢';
     }
 
     if (fieldId in memberProgress) {
-      if (memberProgress[fieldId].toString().toLowerCase().startsWith('x')) return '○';
-      if (memberProgress[fieldId].toString() != '') return '●';
+      if (memberProgress[fieldId].toString().toLowerCase().startsWith('x')) return '⬡';
+      if (memberProgress[fieldId].toString() != '') return '⬢';
     }
 
     return '';

@@ -5,7 +5,7 @@ import { Section, Term } from '@/models/osm';
 
 function processSectionsAndTerms(apiResponse: any): Section[] {
   // Extract section information
-  const allowedSections = ['squirrels', 'beavers', 'cubs', 'scouts', 'explorers', 'network']; // for filtering out unwanted sections
+  const allowedSections: string[] = ['squirrels', 'beavers', 'cubs', 'scouts', 'explorers', 'network']; // for filtering out unwanted sections
   const sections: Section[] = apiResponse.globals.roles
     .filter((role: any) => allowedSections.includes(role.section))
     .map((role: any) => ({
