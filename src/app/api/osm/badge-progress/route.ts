@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextRequest, NextResponse } from 'next/server';
-import { fetchMemberBadges } from '@/utils/osmApiUtils';
+import { fetchBadgeProgress } from '@/utils/osmApiUtils';
 
 // API Route handler
 export async function GET(request: NextRequest) {
@@ -9,8 +9,8 @@ export async function GET(request: NextRequest) {
   const sectionId = searchParams.get('sectionid') || '';
   const termId = searchParams.get('termid') || '';
   const sectionType = searchParams.get('section') || '';
-
-  const memberBadges = await fetchMemberBadges(accessToken, sectionId, termId, sectionType);
-
-  return NextResponse.json(memberBadges);
+  const badgeId = searchParams.get('badgeid') || '';
+  const badgeVersion = searchParams.get('badgeversion') || '';
+  const progress = await fetchBadgeProgress(accessToken, sectionId, termId, sectionType, badgeId, badgeVersion);
+  return NextResponse.json(progress);
 }

@@ -1,5 +1,5 @@
 import { BadgeStructure } from '@/models/osm';
-import { deserializeBadgeStructure } from './osmUtils';
+import { deserializeBadgeStructure } from './osmApiUtils';
 
 import mockBadgeStructureJson from '../../tests/test-data/osm-api-badge-structure.json';
 
