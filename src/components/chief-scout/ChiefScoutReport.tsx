@@ -105,7 +105,7 @@ const ChiefScoutReport: React.FC = () => {
           </tr>
         </thead>
         <tbody>
-          {localBadgeStructure!.map((badge) => {
+          {localBadgeStructure!.filter(badge => badge.details.badge_order != '0').map((badge) => {
             const sectionsGrouped = groupFieldsBySection(badge.fields);
             // TODO: Load the badge progress
 
