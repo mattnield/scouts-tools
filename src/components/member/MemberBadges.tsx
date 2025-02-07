@@ -9,8 +9,6 @@ interface MemberBadgesProps {
 }
 
 const MemberBadges: React.FC<MemberBadgesProps> = ({ member }) => {
-  console.log('Member Badges');
-  console.log(member.badges);
 
   const inProgressBadges = member.badges.filter(b => Number(b.completed) == 0 || Number(b.completed) < Number(b.awarded));
   const completeBadges = member.badges.filter(b => Number(b.completed) || Number(b.awarded) > 0);

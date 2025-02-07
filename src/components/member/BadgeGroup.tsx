@@ -10,9 +10,6 @@ interface BadgeGroupProps {
 }
 
 const BadgeGroup: React.FC<BadgeGroupProps> = ({ badges, title }) => {
-  console.log(`Badges: ${title}`);
-  console.log(badges);
-
   return (
     <div className='rounded-md background-blue-900'>
       <h2 className='text-l font-semibold text-violet-900 pb-4'>{title}</h2>
