@@ -3,6 +3,7 @@ import { useParams } from 'next/navigation';
 import { useApplicationContext } from '@/context/ApplicationContext';
 import { Member } from '@/models/osm';
 import { useEffect, useState } from 'react';
+import MemberBadges from '@/components/member/MemberBadges';
 
 const MemberPage = () => {
   const params = useParams();
@@ -20,7 +21,7 @@ const MemberPage = () => {
         setMembers(fetchedMembers);
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
       } catch (err) {
-        setError('Failed to load members.');
+        setError('Page failed to load members.');
       } finally {
         setLoading(false);
       }
@@ -52,6 +53,8 @@ const MemberPage = () => {
       <p>Patrol: {member?.patrol}</p>
       <p>Age: {member?.age}</p>
       <p>Secions: {member?.sectionid}</p>
+      <h3 className='text-l font-semibold text-violet-900'>Badges</h3>
+      <MemberBadges member={member!} />
     </div>
   );
 };
