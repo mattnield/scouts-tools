@@ -2,8 +2,8 @@
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
-import { BadgeStructure, BadgeType, Member, MemberBadgeProgress, Section } from '@/models/osm'; // Import Section model
-import { GetBadgesByMember, GetBadgesByType } from '@/utils/apiWrapper';
+import { BadgeStructure, Member, MemberBadgeProgress, Section } from '@/models/osm'; // Import Section model
+import { GetBadges, GetBadgesByMember } from '@/utils/apiWrapper';
 
 interface ApplicationContextType {
   sections: Section[]; // Array of Section objects
@@ -24,7 +24,7 @@ export const ApplicationContextProvider: React.FC<{ children: React.ReactNode }>
   const [sections, setSections] = useState<Section[]>([]);
   const [selectedSection, setSelectedSectionState] = useState<Section | null>(null);
   const [members, setMembers] = useState<Member[] | null>(null);
-  const [badgeStructure, setBadgeStructure] = useState<BadgeStructure[] | null>(null);
+  const [badgeStructure, setBadgeStructure] = useState<BadgeStructure[]>([]);
   const [badgeProgress, setBadgeProgress] = useState<Record<string, MemberBadgeProgress[]> | null>(null);
 
   // Load selected section from cookies on mount
@@ -39,7 +39,7 @@ export const ApplicationContextProvider: React.FC<{ children: React.ReactNode }>
   // Clear section-specific data when section changes
   useEffect(() => {
     setMembers(null);
-    setBadgeStructure(null);
+    setBadgeStructure([]);
     setBadgeProgress(null);
   }, [selectedSection]);
 
@@ -72,18 +72,17 @@ export const ApplicationContextProvider: React.FC<{ children: React.ReactNode }>
   };
 
   const getBadgeStructure = async (): Promise<BadgeStructure[]> => {
-    if (badgeStructure) return badgeStructure;
+    if (badgeStructure.length > 0) return badgeStructure;
     if (!selectedSection) throw new Error('No section selected');
 
     try {
-      const fetchedBadgeStructure = await GetBadgesByType(selectedSection, BadgeType.Challenge);
-      setBadgeStructure(fetchedBadgeStructure); // Cache the fetched members
+      setBadgeStructure(await GetBadges(selectedSection));
       if (badgeStructure)
         return badgeStructure;
       else
         return [];
     } catch (error) {
-      console.error('Failed to fetch members:', error);
+      console.error('Failed to fetch badge structure:', error);
       throw error; // Pass error back to the caller
     }
   };

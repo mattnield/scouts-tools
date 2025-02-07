@@ -9,7 +9,7 @@ export async function GetBadgesByMember(section: Section): Promise<Member[] | nu
 
     const response = await fetch(requestUrl);
     if (!response.ok) {
-      throw new Error(`Failed to fetch sections: ${response.statusText}`);
+      throw new Error(`API Wrapper failed to get badges by member: ${response.statusText}`);
     }
     const data: Member[] = await response.json(); //
     return data;
@@ -26,7 +26,7 @@ export async function GetMember(section: Section, memberId: string): Promise<Mem
 
     const response = await fetch(requestUrl);
     if (!response.ok) {
-      throw new Error(`Failed to fetch sections: ${response.statusText}`);
+      throw new Error(`API Wrapper failed to members: ${response.statusText}`);
     }
     const data: Member = await response.json(); //
     return data;
@@ -37,14 +37,25 @@ export async function GetMember(section: Section, memberId: string): Promise<Mem
   return { scoutid: 0 } as Member;
 }
 
-export async function GetBadgesByType(section: Section, type: BadgeType): Promise<BadgeStructure[] | null> {
+export async function GetBadges(section: Section): Promise<BadgeStructure[]> {
+  let badges: BadgeStructure[] = [];
+  badges = [...await GetBadgesByType(section, BadgeType.Challenge)];
+  badges = [...badges, ...await GetBadgesByType(section, BadgeType.Activity)];
+  badges = [...badges, ...await GetBadgesByType(section, BadgeType.Staged)];
+
+  console.log(`Found ${badges.length} badges`);
+
+  return badges;
+}
+
+export async function GetBadgesByType(section: Section, type: BadgeType): Promise<BadgeStructure[]> {
   try {
     const requestUrl = `/api/osm/badges-by-type?sectionid=${section?.sectionid}&termid=${section?.latestTerm?.termid || ''}&section=${section?.section}&type=${type}`;
 
     const response = await fetch(requestUrl);
 
     if (!response.ok) {
-      throw new Error(`Failed to fetch sections: ${response.statusText}`);
+      throw new Error(`API Wrapper failed to get badges by type: ${response.statusText}`);
     }
 
     const data: BadgeStructure[] = await response.json(); //
@@ -53,7 +64,7 @@ export async function GetBadgesByType(section: Section, type: BadgeType): Promis
     console.log(err.message);
   }
 
-  return null;
+  return [];
 }
 
 /**
@@ -69,7 +80,7 @@ export async function GetBadgeProgress(section: Section, badge: BadgeStructure):
     const response = await fetch(requestUrl);
 
     if (!response.ok) {
-      throw new Error(`Failed to fetch sections: ${response.statusText}`);
+      throw new Error(`API wrapper failed to get badge progress: ${response.statusText}`);
     }
 
     const data: MemberBadgeProgress[] = await response.json(); //

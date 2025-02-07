@@ -5,7 +5,7 @@ import { useApplicationContext } from '@/context/ApplicationContext';
 import Image from 'next/image';
 import Loading from '../Loading';
 import Link from 'next/link';
-import { Badge, BadgeStructure, Member } from '@/models/osm';
+import { Badge, BadgeStructure, BadgeType, Member } from '@/models/osm';
 
 const ChiefScoutSummary: React.FC = () => {
   const { selectedSection, getMembers, getBadgeStructure } = useApplicationContext();
@@ -29,7 +29,7 @@ const ChiefScoutSummary: React.FC = () => {
 
       try {
         const fetchedMembers = await getMembers();
-        const fetchedBadgeStructure = await getBadgeStructure();
+        const fetchedBadgeStructure = (await getBadgeStructure())?.filter(b => b.details.type_id == BadgeType.Challenge.toString()) || [];
 
         setLocalMembers(fetchedMembers);
         setLocalBadgeStructure(fetchedBadgeStructure);

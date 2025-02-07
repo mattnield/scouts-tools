@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useApplicationContext } from '@/context/ApplicationContext';
 import Loading from '../Loading';
 import Link from 'next/link';
-import { BadgeField, BadgeStructure, Member, MemberBadgeProgress } from '@/models/osm';
+import { BadgeField, BadgeStructure, BadgeType, Member, MemberBadgeProgress } from '@/models/osm';
 import { GetBadgeProgress } from '@/utils/apiWrapper';
 
 interface LocalBadgeProgress { [badegId: string]: MemberBadgeProgress[] }
@@ -32,7 +32,7 @@ const ChiefScoutReport: React.FC = () => {
 
       try {
         const fetchedMembers = await getMembers();
-        const fetchedBadgeStructure = await getBadgeStructure();
+        const fetchedBadgeStructure = (await getBadgeStructure())?.filter(b => b.details.badge_order != '0' && b.details.type_id == BadgeType.Challenge.toString()) || [];
 
         setLocalMembers(fetchedMembers);
         setLocalBadgeStructure(fetchedBadgeStructure);
@@ -105,7 +105,7 @@ const ChiefScoutReport: React.FC = () => {
           </tr>
         </thead>
         <tbody>
-          {localBadgeStructure!.filter(badge => badge.details.badge_order != '0').map((badge) => {
+          {localBadgeStructure!.map((badge) => {
             const sectionsGrouped = groupFieldsBySection(badge.fields);
             // TODO: Load the badge progress
 
