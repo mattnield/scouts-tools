@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useEffect } from 'react';
-import { Badge, Member } from '@/models/osm';
 import BadgeGroup from './BadgeGroup';
+import { Member } from '@/models/osm';
 
 interface MemberBadgesProps {
   member: Member;
