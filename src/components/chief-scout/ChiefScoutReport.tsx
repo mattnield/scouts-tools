@@ -64,7 +64,6 @@ const ChiefScoutReport: React.FC = () => {
     if (!memberProgress) return '';
 
     if (memberProgress.completed == "1") {
-      console.log(`Member ${memberId} compelted badge ${badgeId}`)
       return '⬢';
     }
 
