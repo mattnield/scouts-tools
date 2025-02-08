@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import BadgeGroup from './BadgeGroup';
 import { Member } from '@/models/osm';
 
@@ -12,15 +12,6 @@ const MemberBadges: React.FC<MemberBadgesProps> = ({ member }) => {
 
   const inProgressBadges = member.badges.filter(b => Number(b.completed) == 0 || Number(b.completed) < Number(b.awarded));
   const completeBadges = member.badges.filter(b => Number(b.completed) || Number(b.awarded) > 0);
-
-  useEffect(() => {
-    const init = async () => {
-      const { Tooltip, initTWE } = await import("tw-elements");
-      initTWE({ Tooltip });
-    };
-    init();
-  }, []);
-
 
   if (!member) {
     return <p>PUnable to diaply this memebr.</p>;
